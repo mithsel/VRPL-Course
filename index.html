@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRPL Drone Academy - Course & Fee Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Golden Buzz (Yellow/Gold, Black, White) -->
+    <!-- Application Structure Plan: The application is designed as a single-page interactive dashboard. The primary structure consists of a hero section for immediate engagement, followed by a set of filter buttons for course categories. These buttons control a dynamic grid of course cards and an interactive bar chart. This structure was chosen to transform the static document into a user-centric tool. It allows users to instantly find relevant information (filtering) and visually compare costs (charting), which are the two primary tasks a potential student would perform. This is more intuitive and faster than reading through the original document's tables. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Full list of courses. Goal: Organize/Inform. Viz: Grid of interactive cards (HTML/Tailwind). Interaction: Filter by category, hover effect. Justification: Cards are visually appealing and organize complex data cleanly. Filtering is essential for user navigation.
+        - Report Info: Course categories. Goal: Organize. Viz: Filter buttons. Interaction: Click to filter cards/chart. Justification: Provides a clear, top-level control for the user to navigate the content.
+        - Report Info: Course Fees. Goal: Compare. Viz: Bar Chart (Chart.js/Canvas). Interaction: Tooltips on hover, dynamic updates from filters. Justification: A bar chart is the most effective way to visually compare the costs of different courses, a key decision-making factor for students.
+        - Report Info: Course Durations & Notes. Goal: Inform. Viz: Text on cards. Interaction: None. Justification: Simple text is the clearest way to present these specific details within the context of each course. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-hero-pattern {
+            background-image: url('https://images.unsplash.com/photo-1594980595438-a33a8a6d7156?q=80&w=2670&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .filter-btn {
+            transition: all 0.3s ease-in-out;
+        }
+        .filter-btn.active {
+            background-color: #FFC700;
+            color: #111111;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-black text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 grid grid-cols-[1fr_auto_1fr] items-center">
+            <div></div>
+            <div class="flex items-center gap-4 justify-self-center">
+                <img src="https://placehold.co/100x40/FFC700/000000?text=VRPL+Logo" alt="VRPL Drone Academy Logo" class="h-10">
+                <img src="https://placehold.co/80x40/000000/FFC700?text=Cert+Logo" alt="Certification Partner Logo" class="h-10">
+            </div>
+            <a href="#contact" class="bg-[#FFC700] text-black font-semibold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-colors duration-300 justify-self-end">Contact Us</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="relative bg-hero-pattern text-white py-20 md:py-32">
+            <div class="absolute inset-0 bg-black opacity-60"></div>
+            <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Master the Skies of Tomorrow</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto">Explore our DGCA-certified and specialized drone courses. Find the perfect training program to launch your career in the UAV industry.</p>
+            </div>
+        </section>
+
+        <section id="courses" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-black">Our Course Catalog</h3>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Select a category to filter our extensive range of drone training programs or explore our interactive fee comparison chart.</p>
+                </div>
+                
+                <div id="filter-container" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
+                </div>
+
+                <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+        
+        <section class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-black">Interactive Fee Comparison</h3>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Visually compare course fees to find the program that fits your budget. Use the filters above to narrow down the results.</p>
+                </div>
+                <div class="bg-white p-4 md:p-8 rounded-2xl shadow-xl">
+                     <div class="chart-container">
+                        <canvas id="feesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="bg-black text-white py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold text-[#FFC700]">Ready to Take Flight?</h3>
+                <p class="mt-4 text-lg max-w-xl mx-auto">Contact us today to enroll or to get more information about our drone training programs.</p>
+                <div class="mt-8">
+                    <a href="mailto:info@vrpldroneacademy.com" class="bg-[#FFC700] text-black font-bold py-3 px-8 rounded-lg text-lg hover:bg-yellow-400 transition-colors duration-300">Email for Enrollment</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p>&copy; 2025 VRPL Drone Academy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+<script>
+    const courseData = [
+        { id: 1, name: "Small (2kg - 25kg) Remote Pilot Training", category: "DGCA Certified", duration: "7 Working Days", feeStudent: 20000, feeGeneral: 30000, note: "DGCA Certified Course" },
+        { id: 2, name: "Agricultural Drone Spraying Training", category: "Application Based", duration: "7 Working Days", fee: 25000 },
+        { id: 3, name: "Drone Technician Course", category: "Application Based", duration: "5 Working Days", fee: 20000 },
+        { id: 4, name: "Aerial Cinematography Training", category: "Application Based", duration: "7 Working Days", fee: 25000 },
+        { id: 5, name: "Survey and Mapping Training", category: "Application Based", duration: "7 Working Days", fee: 25000 },
+        { id: 6, name: "Custom / FPV Drone Build Training", category: "FPV Certification", duration: "10 Working Days", fee: 35000 },
+        { id: 7, name: "FPV Pilot Training", category: "FPV Certification", duration: "7 Working Days", fee: 30000 },
+        { id: 8, name: "UAV Engineering", category: "Job Oriented", duration: "3 Months", fee: 80000 },
+        { id: 9, name: "20 Hours Flying Completion Course", category: "Job Oriented", duration: "4 Working Days", fee: 30000 },
+        { id: 10, name: "DGCA Viva Training", category: "Job Oriented", duration: "7 Working Days", fee: 30000 },
+        { id: 11, name: "Exclusive Courses for Kids", category: "Exclusive", duration: "2 Working Days", fee: 1000, note: "Min 20 candidates" },
+        { id: 12, name: "Basic Drone Training", category: "Exclusive", duration: "2 Working Days", fee: 2500, note: "Min 10 candidates" },
+        { id: 13, name: "Basic Fixed-wing Design", category: "Exclusive", duration: "7 Working Days", fee: 7000 },
+        { id: 14, name: "Basic Multirotor Design", category: "Exclusive", duration: "7 Working Days", fee: 7000 },
+        { id: 15, name: "Agricultural Drone Spraying + Small RPC", category: "RPC Combo", duration: "12 Working Days", fee: 45000 },
+        { id: 16, name: "Drone Technician + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 40000 },
+        { id: 17, name: "Aerial Cinematography + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 45000 },
+    ];
+
+    const courseGrid = document.getElementById('course-grid');
+    const filterContainer = document.getElementById('filter-container');
+    const categories = ['All', ...new Set(courseData.map(course => course.category))];
+    let feesChart;
+    let currentFilter = 'All';
+
+    const formatCurrency = (value) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(value);
+
+    function renderCards(filter = 'All') {
+        courseGrid.innerHTML = '';
+        const filteredCourses = filter === 'All' ? courseData : courseData.filter(course => course.category === filter);
+
+        if (filteredCourses.length === 0) {
+            courseGrid.innerHTML = `<p class="text-center text-gray-500 col-span-full">No courses found for this category.</p>`;
+            return;
+        }
+
+        filteredCourses.forEach(course => {
+            let feeHTML = '';
+            if (course.feeStudent && course.feeGeneral) {
+                feeHTML = `
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Student</p>
+                            <p class="text-xl font-bold text-black">${formatCurrency(course.feeStudent)}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">General</p>
+                            <p class="text-xl font-bold text-black">${formatCurrency(course.feeGeneral)}</p>
+                        </div>
+                    </div>`;
+            } else {
+                feeHTML = `<p class="text-2xl font-bold text-black">${formatCurrency(course.fee)}</p>`;
+            }
+
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300";
+            card.innerHTML = `
+                <div class="p-6 flex-grow">
+                    <p class="text-sm font-semibold text-[#FFC700] uppercase tracking-wider">${course.category}</p>
+                    <h4 class="text-xl font-bold mt-2 text-black h-14">${course.name}</h4>
+                    <p class="text-gray-600 mt-2 font-medium">
+                        <span class="font-semibold">Duration:</span> ${course.duration}
+                    </p>
+                </div>
+                <div class="p-6 bg-gray-50 border-t border-gray-200">
+                    ${feeHTML}
+                    ${course.note ? `<p class="text-xs text-center text-gray-500 mt-3">${course.note}</p>` : ''}
+                </div>
+            `;
+            courseGrid.appendChild(card);
+        });
+    }
+
+    function setupFilters() {
+        categories.forEach(category => {
+            const button = document.createElement('button');
+            button.className = 'filter-btn bg-gray-200 text-gray-700 font-medium py-2 px-5 rounded-full hover:bg-gray-300';
+            button.textContent = category;
+            if (category === 'All') {
+                button.classList.add('active');
+            }
+            button.addEventListener('click', () => {
+                currentFilter = category;
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                renderCards(currentFilter);
+                updateChart(currentFilter);
+            });
+            filterContainer.appendChild(button);
+        });
+    }
+    
+    const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (label.length <= maxLength) return label;
+        
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        
+        words.forEach(word => {
+            if ((currentLine + word).length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = '';
+            }
+            currentLine += word + ' ';
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    };
+
+
+    function initializeChart(filter = 'All') {
+        const ctx = document.getElementById('feesChart').getContext('2d');
+        const filteredData = filter === 'All' ? courseData : courseData.filter(course => course.category === filter);
+
+        const chartData = filteredData.map(c => c.feeGeneral || c.fee);
+        const chartLabels = filteredData.map(c => wrapLabel(c.name));
+        
+        feesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Course Fee (General Category)',
+                    data: chartData,
+                    backgroundColor: 'rgba(255, 199, 0, 0.6)',
+                    borderColor: 'rgba(255, 199, 0, 1)',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return formatCurrency(value);
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                           font: {
+                               size: 10
+                           }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += formatCurrency(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateChart(filter = 'All') {
+        const filteredData = filter === 'All' ? courseData : courseData.filter(course => course.category === filter);
+        const newData = filteredData.map(c => c.feeGeneral || c.fee);
+        const newLabels = filteredData.map(c => wrapLabel(c.name));
+        
+        feesChart.data.labels = newLabels;
+        feesChart.data.datasets[0].data = newData;
+        feesChart.update();
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        setupFilters();
+        renderCards();
+        initializeChart();
+    });
+
+</script>
+</body>
+</html>
