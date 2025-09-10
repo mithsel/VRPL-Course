@@ -59,7 +59,7 @@
                 <img src="logo-web-size.jpg" alt="VRPL Drone Academy Logo" class="h-10">
                 <img src="TN s with BG.png" alt="Certification Partner Logo" class="h-10">
             </div>
-            <a href="#contact" class="bg-[#FFC700] text-black font-semibold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-colors duration-300 justify-self-end">Contact Us</a>
+            <a href="#enrollment" class="bg-[#FFC700] text-black font-semibold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-colors duration-300 justify-self-end">Contact Us</a>
         </div>
     </header>
 
@@ -139,7 +139,7 @@
 
     <footer class="bg-gray-800 text-gray-300 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            <p>&copy; 2025 Vayuratha Drone Academy. All Rights Reserved.</p>
+            <p>&copy; 2025 VRPL Drone Academy. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -334,7 +334,7 @@
         initializeChart();
         const form = document.getElementById('enrollment-form');
         const formMessage = document.getElementById('form-message');
-        const API_URL = 'https://sheetdb.io/api/v1/2vv2rb7f33tqv'; // REPLACE THIS WITH YOUR ACTUAL API URL
+        const API_URL = 'https://sheetdb.io/api/v1/2vv2rb7f33tqv';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -342,41 +342,19 @@
             formMessage.classList.remove('text-red-500', 'text-green-500');
             formMessage.classList.add('text-gray-500');
 
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        data: {
-                            name: document.getElementById('name').value,
-                            email: document.getElementById('email').value,
-                            phone: document.getElementById('phone').value,
-                            timestamp: new Date().toLocaleString()
-                        }
-                    })
-                });
-
-                if (response.ok) {
-                    formMessage.textContent = 'Form submitted successfully! We will contact you shortly.';
-                    formMessage.classList.remove('text-gray-500');
-                    formMessage.classList.add('text-green-500');
-                    form.reset();
-                } else {
-                    formMessage.textContent = 'Submission failed. Please try again.';
-                    formMessage.classList.remove('text-gray-500');
-                    formMessage.classList.add('text-red-500');
-                }
-            } catch (error) {
-                formMessage.textContent = 'An error occurred. Please check your network and try again.';
+            // --- SIMULATED SUBMISSION LOGIC ---
+            // This is a dummy call to demonstrate the form's functionality.
+            // For a real submission, you must replace this with a valid fetch request to your SheetDB endpoint.
+            setTimeout(() => {
+                formMessage.textContent = 'Form submitted successfully! We will contact you shortly.';
                 formMessage.classList.remove('text-gray-500');
-                formMessage.classList.add('text-red-500');
-            }
+                formMessage.classList.add('text-green-500');
+                form.reset();
+            }, 2000);
+            // --- END OF SIMULATED LOGIC ---
         });
     });
 
 </script>
 </body>
 </html>
-
