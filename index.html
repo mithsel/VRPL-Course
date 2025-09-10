@@ -86,14 +86,41 @@
                 </div>
             </div>
         </section>
+
+        <section id="enrollment" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-black">Join Our Academy</h3>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Fill out the form below to get more information and enroll in your chosen course. Our team will contact you shortly.</p>
+                </div>
+                <div class="max-w-xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+                    <form id="enrollment-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 bg-gray-100 border-gray-300 rounded-lg shadow-sm focus:border-[#FFC700] focus:ring focus:ring-[#FFC700] focus:ring-opacity-50">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 bg-gray-100 border-gray-300 rounded-lg shadow-sm focus:border-[#FFC700] focus:ring focus:ring-[#FFC700] focus:ring-opacity-50">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required class="mt-1 block w-full px-4 py-2 bg-gray-100 border-gray-300 rounded-lg shadow-sm focus:border-[#FFC700] focus:ring focus:ring-[#FFC700] focus:ring-opacity-50">
+                        </div>
+                        <div id="form-message" class="text-center text-sm font-medium"></div>
+                        <button type="submit" class="w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-300">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
         
-        <section class="py-16 md:py-24 bg-gray-50">
+        <section class="py-16 md:py-24 bg-white">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                  <div class="text-center mb-12">
                     <h3 class="text-3xl md:text-4xl font-bold text-black">Interactive Fee Comparison</h3>
                     <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Visually compare course fees to find the program that fits your budget. Use the filters above to narrow down the results.</p>
                 </div>
-                <div class="bg-white p-4 md:p-8 rounded-2xl shadow-xl">
+                <div class="bg-gray-50 p-4 md:p-8 rounded-2xl shadow-xl">
                      <div class="chart-container">
                         <canvas id="feesChart"></canvas>
                     </div>
@@ -114,7 +141,7 @@
 
     <footer class="bg-gray-800 text-gray-300 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            <p>&copy; 2025 VRPL Drone Academy. All Rights Reserved.</p>
+            <p>&copy; 2025 Vayuratha Private Limited. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -137,11 +164,12 @@
         { id: 15, name: "Agricultural Drone Spraying + Small RPC", category: "RPC Combo", duration: "12 Working Days", fee: 45000 },
         { id: 16, name: "Drone Technician + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 40000 },
         { id: 17, name: "Aerial Cinematography + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 45000 },
+        { id: 18, name: "All-in-One Drone Course", category: "All-in-One", duration: "Comprehensive Training", fee: 150000, note: "Includes all courses and certifications" },
     ];
 
     const courseGrid = document.getElementById('course-grid');
     const filterContainer = document.getElementById('filter-container');
-    const categories = ['All', ...new Set(courseData.map(course => course.category))];
+    const categories = [...new Set(courseData.map(course => course.category))];
     let feesChart;
     let currentFilter = 'All';
 
@@ -179,7 +207,7 @@
             card.innerHTML = `
                 <div class="p-6 flex-grow">
                     <p class="text-sm font-semibold text-[#FFC700] uppercase tracking-wider">${course.category}</p>
-                    <h4 class="text-xl font-bold mt-2 text-black h-14">${course.name}</h4>
+                    <h4 class="text-xl font-bold mt-2 text-black">${course.name}</h4>
                     <p class="text-gray-600 mt-2 font-medium">
                         <span class="font-semibold">Duration:</span> ${course.duration}
                     </p>
@@ -198,9 +226,6 @@
             const button = document.createElement('button');
             button.className = 'filter-btn bg-gray-200 text-gray-700 font-medium py-2 px-5 rounded-full hover:bg-gray-300';
             button.textContent = category;
-            if (category === 'All') {
-                button.classList.add('active');
-            }
             button.addEventListener('click', () => {
                 currentFilter = category;
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -309,9 +334,50 @@
         setupFilters();
         renderCards();
         initializeChart();
+        const form = document.getElementById('enrollment-form');
+        const formMessage = document.getElementById('form-message');
+        const API_URL = 'https://sheetdb.io/api/v1/axk5wuc5e12zk'; // REPLACE THIS WITH YOUR ACTUAL API URL
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formMessage.textContent = 'Submitting...';
+            formMessage.classList.remove('text-red-500', 'text-green-500');
+            formMessage.classList.add('text-gray-500');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        data: {
+                            name: document.getElementById('name').value,
+                            email: document.getElementById('email').value,
+                            phone: document.getElementById('phone').value,
+                            timestamp: new Date().toLocaleString()
+                        }
+                    })
+                });
+
+                if (response.ok) {
+                    formMessage.textContent = 'Form submitted successfully! We will contact you shortly.';
+                    formMessage.classList.remove('text-gray-500');
+                    formMessage.classList.add('text-green-500');
+                    form.reset();
+                } else {
+                    formMessage.textContent = 'Submission failed. Please try again.';
+                    formMessage.classList.remove('text-gray-500');
+                    formMessage.classList.add('text-red-500');
+                }
+            } catch (error) {
+                formMessage.textContent = 'An error occurred. Please check your network and try again.';
+                formMessage.classList.remove('text-gray-500');
+                formMessage.classList.add('text-red-500');
+            }
+        });
     });
 
 </script>
 </body>
 </html>
-
