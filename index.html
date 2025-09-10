@@ -139,7 +139,7 @@
 
     <footer class="bg-gray-800 text-gray-300 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            <p>&copy; 2025 VRPL Drone Academy. All Rights Reserved.</p>
+            <p>&copy; 2025 Vayuratha Drone Academy. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -334,30 +334,48 @@
         initializeChart();
         const form = document.getElementById('enrollment-form');
         const formMessage = document.getElementById('form-message');
-        const SHEETDB_URL = "https://sheetdb.io/api/v1/sl7b5nwa7sxe2";
+        const SHEETDB_URL = "https://sheetdb.io/api/v1/sl7b5nwa7sxe2"; // This is a placeholder URL
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             formMessage.textContent = 'Submitting...';
             formMessage.classList.remove('text-red-500', 'text-green-500');
             formMessage.classList.add('text-gray-500');
+            
+            try {
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                data.timestamp = new Date().toLocaleString();
+                
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: data })
+                });
 
-            // --- SIMULATED SUBMISSION LOGIC ---
-            // This is a dummy call to demonstrate the form's functionality.
-            // For a real submission, you must replace this with a valid fetch request to your SheetDB endpoint.
-            setTimeout(() => {
-                formMessage.textContent = 'Form submitted successfully! We will contact you shortly.';
+                if (response.ok) {
+                    formMessage.textContent = 'Form submitted successfully! We will contact you shortly.';
+                    formMessage.classList.remove('text-gray-500');
+                    formMessage.classList.add('text-green-500');
+                    form.reset();
+                } else {
+                    const errorText = await response.text();
+                    formMessage.textContent = `Submission failed. Server error: ${errorText}`;
+                    formMessage.classList.remove('text-gray-500');
+                    formMessage.classList.add('text-red-500');
+                    console.error('SheetDB submission failed:', response.status, errorText);
+                }
+            } catch (error) {
+                formMessage.textContent = 'An error occurred. Please check your network connection and try again.';
                 formMessage.classList.remove('text-gray-500');
-                formMessage.classList.add('text-green-500');
-                form.reset();
-            }, 2000);
-            // --- END OF SIMULATED LOGIC ---
+                formMessage.classList.add('text-red-500');
+                console.error('Network or CORS error:', error);
+            }
         });
     });
 
 </script>
 </body>
 </html>
-
-
-
