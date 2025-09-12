@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Golden Buzz (Yellow/Gold, Black, White) -->
+    <!-- Chosen Palette: Yellow/Gold, Green, Black, White -->
     <!-- Application Structure Plan: The application is designed as a single-page interactive dashboard. The primary structure consists of a hero section for immediate engagement, followed by a set of filter buttons for course categories. These buttons control a dynamic grid of course cards and an interactive bar chart. This structure was chosen to transform the static document into a user-centric tool. It allows users to instantly find relevant information (filtering) and visually compare costs (charting), which are the two primary tasks a potential student would perform. This is more intuitive and faster than reading through the original document's tables. -->
     <!-- Visualization & Content Choices: 
         - Report Info: Full list of courses. Goal: Organize/Inform. Viz: Grid of interactive cards (HTML/Tailwind). Interaction: Filter by category, hover effect. Justification: Cards are visually appealing and organize complex data cleanly. Filtering is essential for user navigation.
@@ -121,7 +121,7 @@
                     <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Visually compare course fees to find the program that fits your budget. Use the filters above to narrow down the results.</p>
                 </div>
                 <div class="bg-gray-50 p-4 md:p-8 rounded-2xl shadow-xl">
-                     <div class="chart-container">
+                    <div class="chart-container">
                         <canvas id="feesChart"></canvas>
                     </div>
                 </div>
@@ -140,6 +140,7 @@
     <footer class="bg-gray-800 text-gray-300 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
             <p>&copy; 2025 Vayuratha Drone Academy. All Rights Reserved.</p>
+            <a href="https://www.vayuratha.com" target="_blank" class="text-green-500 hover:text-green-400 transition-colors duration-300 mt-2 block">Visit our website</a>
         </div>
     </footer>
 
@@ -162,7 +163,9 @@
         { id: 15, name: "Agricultural Drone Spraying + Small RPC", category: "RPC Combo", duration: "12 Working Days", fee: 45000 },
         { id: 16, name: "Drone Technician + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 40000 },
         { id: 17, name: "Aerial Cinematography + Small RPC", category: "RPC Combo", duration: "10 Working Days", fee: 45000 },
-        { id: 18, name: "All-in-One Drone Course", category: "All-in-One", duration: "Comprehensive Training", fee: 150000, note: "Includes all courses and certifications" },
+        { id: 18, name: "Survey and Mapping Training + Small (2kg - 25kg) Remote pilot training", category: "RPC Combo", duration: "10 Working Days", fee: 45000 },
+        { id: 19, name: "Custom / FPV Drone Build Training + Small (2kg - 25kg) Remote pilot training", category: "RPC Combo", duration: "14 Working Days", fee: 55000 },
+        { id: 20, name: "ALL IN DRONE COURSE (Beginner to Professional)", category: "All-in-One", duration: "30 Working Days", fee: 150000, note: "Includes all courses and certifications" },
     ];
 
     const courseGrid = document.getElementById('course-grid');
@@ -189,28 +192,28 @@
                     <div class="grid grid-cols-2 gap-2 text-center">
                         <div>
                             <p class="text-sm font-medium text-gray-500">Student</p>
-                            <p class="text-xl font-bold text-black">${formatCurrency(course.feeStudent)}</p>
+                            <p class="text-xl font-bold text-[#22C55E]">${formatCurrency(course.feeStudent)}</p>
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">General</p>
-                            <p class="text-xl font-bold text-black">${formatCurrency(course.feeGeneral)}</p>
+                            <p class="text-xl font-bold text-[#22C55E]">${formatCurrency(course.feeGeneral)}</p>
                         </div>
                     </div>`;
             } else {
-                feeHTML = `<p class="text-2xl font-bold text-black">${formatCurrency(course.fee)}</p>`;
+                feeHTML = `<p class="text-2xl font-bold text-[#22C55E] text-center">${formatCurrency(course.fee)}</p>`;
             }
 
             const card = document.createElement('div');
             card.className = "bg-white rounded-xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300";
             card.innerHTML = `
-                <div class="p-6 flex-grow">
+                <div class="p-6 flex-grow text-center">
                     <p class="text-sm font-semibold text-[#FFC700] uppercase tracking-wider">${course.category}</p>
                     <h4 class="text-xl font-bold mt-2 text-black">${course.name}</h4>
                     <p class="text-gray-600 mt-2 font-medium">
                         <span class="font-semibold">Duration:</span> ${course.duration}
                     </p>
                 </div>
-                <div class="p-6 bg-gray-50 border-t border-gray-200">
+                <div class="p-6 bg-gray-50 border-t border-gray-200 text-center">
                     ${feeHTML}
                     ${course.note ? `<p class="text-xs text-center text-gray-500 mt-3">${course.note}</p>` : ''}
                 </div>
@@ -290,7 +293,7 @@
                     x: {
                         ticks: {
                            font: {
-                               size: 10
+                                size: 10
                            }
                         }
                     }
@@ -379,4 +382,3 @@
 </script>
 </body>
 </html>
-
