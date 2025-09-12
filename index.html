@@ -21,11 +21,6 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
-        .bg-hero-pattern {
-            background-image: url('https://images.unsplash.com/photo-1594980595438-a33a8a6d7156?q=80&w=2670&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
         .filter-btn {
             transition: all 0.3s ease-in-out;
         }
@@ -64,17 +59,17 @@
     </header>
 
     <main>
-        <section class="relative bg-hero-pattern text-white py-20 md:py-32">
-            <div class="absolute inset-0 bg-black opacity-60"></div>
-            <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-8">
-                <div class="text-center md:text-left md:w-1/2">
-                    <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Master the Skies of Tomorrow</h2>
-                    <p class="text-lg md:text-xl max-w-3xl mx-auto md:mx-0">Explore our DGCA-certified and specialized drone courses. Find the perfect training program to launch your career in the UAV industry.</p>
-                </div>
-                <div class="md:w-1/2 mt-8 md:mt-0">
-                    <!-- Placeholder for the drone image -->
-                    <img src="drone-cover.jpg" alt="A professional drone flying" class="rounded-lg shadow-xl w-full h-auto">
-                </div>
+        <section class="relative py-20 md:py-32 overflow-hidden text-white">
+            <!-- Background Image Container -->
+            <div class="absolute inset-0 z-0">
+                <!-- Replace 'your-image-url.jpg' with your desired image URL -->
+                <img src="drone-cover1.jpg" alt="Drone flying over scenic landscape" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black opacity-60"></div>
+            </div>
+            <!-- Content Container -->
+            <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Master the Skies of Tomorrow</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto">Explore our DGCA-certified and specialized drone courses. Find the perfect training program to launch your career in the UAV industry.</p>
             </div>
         </section>
 
@@ -93,6 +88,31 @@
             </div>
         </section>
 
+        <section id="founders" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-black">Our Founders</h3>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">Meet the visionaries behind Vayuratha Drone Academy.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center max-w-2xl mx-auto">
+                    <!-- Founder 1 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="mohan-1.jpg" alt="Mohan Rishikesh M" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Mohan Rishikesh M</h4>
+                        <p class="text-sm font-medium text-gray-600">Founder & CEO</p>
+                    </div>
+                    <!-- Founder 2 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="mathi1.jpg" alt="Mathi Sharma" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Mathi Sharma</h4>
+                        <p class="text-sm font-medium text-gray-600">Co Founder & CTO</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="team" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
@@ -103,30 +123,51 @@
                     <!-- Team Member 1 -->
                     <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
                         <!-- Replace src with your image URL -->
-                        <img src="mohan-1.jpg" alt="Mohan Rishikesh M" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
-                        <h4 class="text-xl font-bold text-black">Mohan Rishikesh M</h4>
-                        <p class="text-sm font-medium text-gray-600">Founder & CEO</p>
-                    </div>
-                    <!-- Team Member 2 -->
-                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
-                        <!-- Replace src with your image URL -->
-                        <img src="mathi1.jpg" alt="Mathi Sharma" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
-                        <h4 class="text-xl font-bold text-black">Mathi Sharma</h4>
-                        <p class="text-sm font-medium text-gray-600">Co Founder & CTO</p>
-                    </div>
-                    <!-- Team Member 3 -->
-                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
-                        <!-- Replace src with your image URL -->
                         <img src="dhanush.jpg" alt="Dhanush Anand J" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
                         <h4 class="text-xl font-bold text-black">Dhanush Anand J</h4>
                         <p class="text-sm font-medium text-gray-600">Accountable Manager</p>
                     </div>
-                    <!-- Team Member 4 -->
+                    <!-- Team Member 2 -->
                     <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
                         <!-- Replace src with your image URL -->
                         <img src="shyam.jpg" alt="Shaym kimidi" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
-                        <h4 class="text-xl font-bold text-black">Shaym kimidi</h4>
-                        <p class="text-sm font-medium text-gray-600">RPC Instructor</p>
+                        <h4 class="text-xl font-bold text-black">Kimidi Syam Sandeep</h4>
+                        <p class="text-sm font-medium text-gray-600">RPAS Instructor</p>
+                    </div>
+                     <!-- Team Member 3 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="shivam-Tyagi.jpg" alt="Team Member 1" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Shivam Tyagi</h4>
+                        <p class="text-sm font-medium text-gray-600">RPAS Instructor</p>
+                    </div>
+                     <!-- Team Member 4 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="arun.jpg" alt="Team Member 2" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Arun Joyel P</h4>
+                        <p class="text-sm font-medium text-gray-600">Maintenance Engineer / Pilot </p>
+                    </div>
+                     <!-- Team Member 5 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="aug.jpg" alt="Team Member 3" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Augustin Jebakumar T</h4>
+                        <p class="text-sm font-medium text-gray-600">Ground Crew / Pilot</p>
+                    </div>
+                     <!-- Team Member 6 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="https://placehold.co/150x150/FFC700/303030?text=TM4" alt="Team Member 4" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Asmitaa M</h4>
+                        <p class="text-sm font-medium text-gray-600">Ground Crew / Pilot</p>
+                    </div>
+                     <!-- Team Member 7 -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center">
+                        <!-- Replace src with your image URL -->
+                        <img src="aasish.jpg" alt="Team Member 5" class="w-36 h-36 rounded-full object-cover mb-4 ring-4 ring-[#FFC700]">
+                        <h4 class="text-xl font-bold text-black">Aasish C</h4>
+                        <p class="text-sm font-medium text-gray-600">Advisor</p>
                     </div>
                 </div>
             </div>
@@ -184,7 +225,7 @@
 
     <footer class="bg-gray-800 text-gray-300 py-6">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
-            <p>&copy; 2025 Vayuratha Drone Academy. All Rights Reserved.</p>
+            <p>&copy; 2025 Vayuratha Private Limited. All Rights Reserved.</p>
             <a href="https://www.vayuratha.com" target="_blank" class="text-green-500 hover:text-green-400 transition-colors duration-300 mt-2 block">Visit our website</a>
         </div>
     </footer>
